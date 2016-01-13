@@ -1,0 +1,40 @@
+{% extends 'punchclock/base.html' %}
+{% block lead %}
+	Hello {{ user.first_name }}! 
+{% endblock %}
+{% block top %}
+	{% if cs %}
+	<p class="lead"> You are clocked in as of {{ cs.in_time }}</p>
+	<a href="{% url 'punchclock:clock_out' %}" class="btn btn-primary">Clock Out?</a>
+	{% else %}
+	<p class="lead"> You are not clocked in.</p>
+	<a href="{% url 'punchclock:clock_in' %}" class="btn btn-primary">Clock In?</a>
+	{% endif %}
+	<a href="{% url 'punchclock:logout' %}" class="btn btn-default"> Log Out </a>
+{% endblock %}
+
+{% block bottom %}
+{% if rs %}
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<h3 class="text-center"> Previous Clock Sessions </h3>
+		<div class="col-md-12">
+			<table class="table">
+				<tr>
+					<td> In Time </td>
+					<td> Out Time </td>
+					<td> Hours Worked </td>
+				</tr>
+				{% for clock in rs %}
+				<tr>
+					<td> {{ clock.in_time }} </td>
+					<td> {{ clock.out_time }} </td>
+					<td> {{ clock.in_time|timesince:clock.out_time }} </td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
